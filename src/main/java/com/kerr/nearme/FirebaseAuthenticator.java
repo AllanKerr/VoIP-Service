@@ -1,4 +1,4 @@
-package com.kerr.nearme.events;
+package com.kerr.nearme;
 
 import com.google.api.server.spi.auth.common.User;
 import com.google.api.server.spi.config.Authenticator;
@@ -12,25 +12,21 @@ import java.io.InputStream;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
-import com.google.firebase.internal.NonNull;
-import com.google.firebase.tasks.OnFailureListener;
-import com.google.firebase.tasks.OnSuccessListener;
 import com.google.firebase.tasks.Task;
 import com.google.firebase.tasks.Tasks;
-import com.kerr.nearme.Constants;
 
 /**
  * Created by allankerr on 2016-12-23.
  */
-public class MyAuthenticator implements Authenticator {
+public class FirebaseAuthenticator implements Authenticator {
 
-    private static final Logger log = Logger.getLogger(MyAuthenticator.class.getName());
+    private static final Logger log = Logger.getLogger(FirebaseAuthenticator.class.getName());
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
     static {
         log.info("Initializing Firebase Admin SDK");
-        ClassLoader classLoader = MyAuthenticator.class.getClassLoader();
+        ClassLoader classLoader = FirebaseAuthenticator.class.getClassLoader();
         InputStream keyFileStream = classLoader.getResourceAsStream(Constants.FIREBASE_SERVICE_ACCOUNT_KEY);
 
         FirebaseOptions options = new FirebaseOptions.Builder()

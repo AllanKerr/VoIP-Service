@@ -4,6 +4,7 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
 import com.google.appengine.api.users.User;
+import com.kerr.nearme.FirebaseAuthenticator;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
         description = "API for handling event creation, fetching and queries.")
 public class EventsAPI {
 
-    @ApiMethod(name = "cities.list", authenticators = {MyAuthenticator.class})
+    @ApiMethod(name = "cities.list", authenticators = {FirebaseAuthenticator.class})
     public List<String> citiesList(User user) {
         //EventController controller = new EventController();
         return null;//controller.fetchEventsByUserID(userID);
