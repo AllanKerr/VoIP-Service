@@ -53,6 +53,7 @@ public class FirebaseAuthenticator implements Authenticator {
             log.info("Verification interrupted.");
             e.printStackTrace();
         }
-        return null;
+        // TODO Update for deployment. Temporary UID due to lack of third-party authentication in the Google API Explorer.
+        return new User("Sy2KZvijbug8GkzKHwflttMQf5v2");
     }
 }
