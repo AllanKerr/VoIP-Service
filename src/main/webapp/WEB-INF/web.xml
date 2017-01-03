@@ -20,7 +20,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>receivecall</servlet-name>
-        <url-pattern>/call/receive</url-pattern>
+        <url-pattern>/receive/call</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>receivesms</servlet-name>
@@ -28,6 +28,14 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>receivesms</servlet-name>
-        <url-pattern>/sms/receive</url-pattern>
+        <url-pattern>/receive/sms</url-pattern>
     </servlet-mapping>
+    <filter>
+        <filter-name>requestValidatorFilter</filter-name>
+        <filter-class>com.kerr.nearme.TwilioRequestValidatorFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>requestValidatorFilter</filter-name>
+        <url-pattern>/receive/*</url-pattern>
+    </filter-mapping>
 </web-app>

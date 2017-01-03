@@ -63,6 +63,11 @@
             <artifactId>twilio-java-sdk</artifactId>
             <version>6.3.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.twilio.sdk</groupId>
+            <artifactId>twilio</artifactId>
+            <version>7.3.0</version>
+        </dependency>
 
         <!-- Test Dependencies -->
         <dependency>
