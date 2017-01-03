@@ -7,10 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="nearmebackend" />
+        <module name="NearMeService" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="nearmebackend" target="1.7" />
+      <module name="NearMeService" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>

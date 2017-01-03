@@ -4,7 +4,7 @@
         <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
         <init-param>
             <param-name>services</param-name>
-            <param-value>com.kerr.nearme.events.EventsAPI</param-value>
+            <param-value>com.kerr.nearme.account.AccountAPI</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
@@ -14,4 +14,20 @@
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
+    <servlet>
+        <servlet-name>receivecall</servlet-name>
+        <servlet-class>com.kerr.nearme.ReceiveCallServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>receivecall</servlet-name>
+        <url-pattern>/call/receive</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>receivesms</servlet-name>
+        <servlet-class>com.kerr.nearme.ReceiveSmsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>receivesms</servlet-name>
+        <url-pattern>/sms/receive</url-pattern>
+    </servlet-mapping>
 </web-app>
