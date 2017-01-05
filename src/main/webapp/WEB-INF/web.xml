@@ -30,6 +30,14 @@
         <servlet-name>receivesms</servlet-name>
         <url-pattern>/receive/sms</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>outgoingcall</servlet-name>
+        <servlet-class>com.kerr.nearme.OutgoingCallServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>outgoingcall</servlet-name>
+        <url-pattern>/outgoing</url-pattern>
+    </servlet-mapping>
     <filter>
         <filter-name>requestValidatorFilter</filter-name>
         <filter-class>com.kerr.nearme.TwilioRequestValidatorFilter</filter-class>
