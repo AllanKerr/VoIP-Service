@@ -2,6 +2,7 @@ package com.kerr.nearme;
 
 import com.kerr.nearme.account.Account;
 import com.kerr.nearme.account.AccountClient;
+import com.kerr.nearme.account.PhoneNumber;
 import com.twilio.sdk.verbs.Client;
 import com.twilio.sdk.verbs.Dial;
 import com.twilio.sdk.verbs.TwiMLException;
@@ -43,15 +44,16 @@ public class CallServlet extends HttpServlet {
 
     private TwiMLResponse incomingCallResponse(HttpServletRequest req) {
 
-
-
-
+        String number = req.getParameter("Called");
+        PhoneNumber phoneNumber = new PhoneNumber(number);
+        AccountClient client = new AccountClient();
+        Account account = client.getAccount(phoneNumber);
 
         TwiMLResponse twiml = new TwiMLResponse();
         Dial dial = new Dial();
         try {
             // Hard coded until phone numbers can be associated with users
-            dial.append(new Client("ZYh1BJU0QyWbVw1vDgQshDKelCP2"));
+            dial.append(new Client(account.getUserId()));
             twiml.append(dial);
         } catch (TwiMLException e) {
 
