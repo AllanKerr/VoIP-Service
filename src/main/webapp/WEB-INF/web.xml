@@ -28,7 +28,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>receivesms</servlet-name>
-        <url-pattern>/receive/sms</url-pattern>
+        <url-pattern>/sms/receive</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>outgoingcall</servlet-name>
