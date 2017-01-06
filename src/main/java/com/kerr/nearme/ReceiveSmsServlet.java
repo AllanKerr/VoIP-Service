@@ -14,9 +14,7 @@ import java.io.IOException;
  * Created by allankerr on 2017-01-02.
  */
 public class ReceiveSmsServlet extends HttpServlet {
-
-    private static final String SIGNATURE = "X-Twilio-Signature";
-
+    
     @Override
     public void service(HttpServletRequest request, HttpServletResponse response) throws IOException,
             ServletException {
