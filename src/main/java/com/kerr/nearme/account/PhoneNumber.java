@@ -12,6 +12,12 @@ public class PhoneNumber {
     @Id
     private String phoneNumber;
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    private PhoneNumber() {}
+
     public PhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }

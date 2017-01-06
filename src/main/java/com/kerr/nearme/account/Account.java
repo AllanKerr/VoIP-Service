@@ -22,7 +22,23 @@ public class Account {
     @Index
     private List<Ref<PhoneNumber>> phoneNumbers = new ArrayList<Ref<PhoneNumber>>();
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public PhoneNumber getOutgoingNumber() {
+        return outgoingNumber.get();
+    }
+
     public Account(String userId) {
         this.userId = userId;
+    }
+
+    private Account() {}
+
+    public void addPhoneNumber(PhoneNumber number) {
+        Ref<PhoneNumber> numberRef = Ref.create(number);
+        this.outgoingNumber = numberRef;
+        this.phoneNumbers.add(numberRef);
     }
 }
