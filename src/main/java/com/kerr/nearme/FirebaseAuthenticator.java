@@ -45,7 +45,7 @@ public class FirebaseAuthenticator implements Authenticator {
         try {
             Tasks.await(authTask);
             FirebaseToken decodedToken = authTask.getResult();
-            return new User(decodedToken.getUid());
+            return new User(decodedToken.getUid(), decodedToken.getEmail());
         } catch (ExecutionException e) {
             log.info("Verification failed due to null or malformed token.");
             e.printStackTrace();
@@ -53,7 +53,6 @@ public class FirebaseAuthenticator implements Authenticator {
             log.info("Verification interrupted.");
             e.printStackTrace();
         }
-        // TODO Update for deployment. Temporary UID due to lack of third-party authentication in the Google API Explorer.
-        return new User("Sy2KZvijbug8GkzKHwflttMQf5v2");
+        return null;
     }
 }

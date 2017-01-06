@@ -5,6 +5,7 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.response.UnauthorizedException;
 import com.google.appengine.api.users.User;
 import com.kerr.nearme.APIKeys;
+import com.kerr.nearme.FirebaseAuthenticator;
 import com.twilio.jwt.accesstoken.AccessToken;
 import com.twilio.jwt.accesstoken.VoiceGrant;
 import com.twilio.sdk.TwilioRestClient;
@@ -37,19 +38,20 @@ public class AccountAPI {
         factory.create(content);
     }
 
-    @ApiMethod(name = "accessToken", path = "accessToken")
+    @ApiMethod(name = "accessToken", path = "accessToken", authenticators = {FirebaseAuthenticator.class})
     public TwilioAccessToken accessToken(User user) throws UnauthorizedException {
         if (user == null) {
-            //throw new UnauthorizedException("");
+            throw new UnauthorizedException("");
         }
         VoiceGrant grant = new VoiceGrant();
         grant.setOutgoingApplicationSid("APf952467cd44bb6c6da4edd7b7a0cced2");
+        grant.setPushCredentialSid("CR63be6699797688527c43fdcf30babd68");
 
         AccessToken token = new AccessToken.Builder(
                 APIKeys.TWILIO_ACCOUNT_SID,
                 APIKeys.TWILIO_API_SID,
                 APIKeys.TWILIO_API_SECRET
-        ).identity("test").grant(grant).build();
+        ).identity(user.getUserId()).grant(grant).build();
         return new TwilioAccessToken(token);
     }
 }
