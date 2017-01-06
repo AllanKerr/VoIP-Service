@@ -15,12 +15,12 @@
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
     <servlet>
-        <servlet-name>receivecall</servlet-name>
-        <servlet-class>com.kerr.nearme.ReceiveCallServlet</servlet-class>
+        <servlet-name>call</servlet-name>
+        <servlet-class>com.kerr.nearme.CallServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>receivecall</servlet-name>
-        <url-pattern>/receive/call</url-pattern>
+        <servlet-name>call</servlet-name>
+        <url-pattern>/call</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>receivesms</servlet-name>
@@ -30,20 +30,16 @@
         <servlet-name>receivesms</servlet-name>
         <url-pattern>/sms/receive</url-pattern>
     </servlet-mapping>
-    <servlet>
-        <servlet-name>outgoingcall</servlet-name>
-        <servlet-class>com.kerr.nearme.OutgoingCallServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>outgoingcall</servlet-name>
-        <url-pattern>/outgoing</url-pattern>
-    </servlet-mapping>
     <filter>
         <filter-name>requestValidatorFilter</filter-name>
         <filter-class>com.kerr.nearme.TwilioRequestValidatorFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>requestValidatorFilter</filter-name>
-        <url-pattern>/receive/*</url-pattern>
+        <url-pattern>/call/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>requestValidatorFilter</filter-name>
+        <url-pattern>/sms/*</url-pattern>
     </filter-mapping>
 </web-app>
