@@ -66,5 +66,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.mockito:mockito-all:2.0.2-beta" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.google.appengine:appengine-testing:1.9.48" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.google.appengine:appengine-api-stubs:1.9.48" level="project" />
+    <orderEntry type="library" name="TwilioRestApi" level="project" />
   </component>
 </module>
