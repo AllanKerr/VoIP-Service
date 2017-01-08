@@ -41,11 +41,11 @@ public class AccountAPI {
     }
 
     @ApiMethod(name = "buyPhoneNumber", path = "buyPhoneNumber", authenticators = {FirebaseAuthenticator.class})
-    public void buyPhoneNumber(final User user, String phoneNumber) throws UnauthorizedException, IOException {
+    public void buyPhoneNumber(final User user, PhoneNumber number) throws UnauthorizedException, IOException {
         if (user == null) {
             throw new UnauthorizedException("");
         }
-        final IncomingPhoneNumber newNumber = new BuyPhoneNumberRequest(APIKeys.TWILIO_ACCOUNT_SID, APIKeys.TWILIO_AUTH_TOKEN, phoneNumber)
+        final IncomingPhoneNumber newNumber = new BuyPhoneNumberRequest(APIKeys.TWILIO_ACCOUNT_SID, APIKeys.TWILIO_AUTH_TOKEN, number.getPhoneNumber())
                 .setVoiceApplicationSid(APIKeys.TWILIO_APPLICATION_SID)
                 .setSmsApplicationSid(APIKeys.TWILIO_APPLICATION_SID)
                 .fetchResponse();
