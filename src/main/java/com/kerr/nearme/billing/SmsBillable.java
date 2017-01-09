@@ -2,7 +2,7 @@ package com.kerr.nearme.billing;
 
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Subclass;
-import com.kerr.nearme.APIKeys;
+import com.kerr.nearme.ApiKeys;
 import com.kerr.nearme.account.Account;
 import com.kerr.twilio.messages.Message;
 import com.kerr.twilio.messages.MessageRequest;
@@ -39,7 +39,7 @@ public class SmsBillable extends Billable {
             price = getPrice();
         } else {
             try {
-                Message message = new MessageRequest(APIKeys.TWILIO_ACCOUNT_SID, APIKeys.TWILIO_AUTH_TOKEN, billableSid).fetchResponse();
+                Message message = new MessageRequest(ApiKeys.TWILIO_ACCOUNT_SID, ApiKeys.TWILIO_AUTH_TOKEN, billableSid).fetchResponse();
                 price = Double.parseDouble(message.getPrice());
             } catch (IOException e) {
                 throw new RuntimeException(e);

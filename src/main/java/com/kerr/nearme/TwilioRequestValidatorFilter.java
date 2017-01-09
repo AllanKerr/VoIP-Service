@@ -16,7 +16,7 @@ public class TwilioRequestValidatorFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        requestValidator = new RequestValidator(APIKeys.TWILIO_AUTH_TOKEN);
+        requestValidator = new RequestValidator(ApiKeys.TWILIO_AUTH_TOKEN);
     }
 
     @Override
