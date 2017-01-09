@@ -6,13 +6,14 @@ import com.kerr.nearme.objectify.Dao;
 /**
  * Created by allankerr on 2017-01-08.
  */
-class BillableDao extends Dao<Billable> {
+public class BillableDao extends Dao<Billable> {
 
     static {
         ObjectifyService.register(Billable.class);
+        ObjectifyService.register(SmsBillable.class);
     }
 
-    BillableDao() {
+    public BillableDao() {
         super(Billable.class);
     }
 }
