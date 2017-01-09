@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<queue-entries>
+    <queue>
+        <name>billing-queue</name>
+        <rate>20/s</rate>
+        <bucket-size>100</bucket-size>
+        <retry-parameters>
+            <task-retry-limit>2</task-retry-limit>
+            <min-backoff-seconds>75</min-backoff-seconds>
+        </retry-parameters>
+    </queue>
+</queue-entries>
