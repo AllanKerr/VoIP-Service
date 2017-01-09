@@ -25,6 +25,14 @@
         <url-pattern>/call</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>callstatus</servlet-name>
+        <servlet-class>com.kerr.nearme.CallStatusServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>callstatus</servlet-name>
+        <url-pattern>/call/status</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>receivesms</servlet-name>
         <servlet-class>com.kerr.nearme.ReceiveSmsServlet</servlet-class>
     </servlet>
