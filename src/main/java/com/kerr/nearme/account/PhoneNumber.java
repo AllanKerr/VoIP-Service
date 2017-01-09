@@ -9,16 +9,22 @@ import com.googlecode.objectify.annotation.Id;
 @Entity
 public class PhoneNumber {
 
+    private static final String UKNOWN_PHONE_NUMBER = "+266696687";
     @Id
     private String phoneNumber;
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
 
     private PhoneNumber() {}
 
     public PhoneNumber(String phoneNumber) {
+        assert phoneNumber != null;
         this.phoneNumber = phoneNumber;
+    }
+
+    public boolean isUnknown() {
+        return UKNOWN_PHONE_NUMBER.equals(phoneNumber);
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 }
