@@ -3,7 +3,7 @@ package com.kerr.nearme;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.kerr.nearme.account.Account;
-import com.kerr.nearme.account.AccoutDao;
+import com.kerr.nearme.account.AccountDao;
 import com.kerr.nearme.account.PhoneNumber;
 import com.kerr.nearme.billing.BillableQueue;
 import com.kerr.nearme.billing.SmsBillable;
@@ -29,7 +29,7 @@ public class ReceiveSmsServlet extends HttpServlet {
 
         String toNumber = request.getParameter(TO_PARAM);
         PhoneNumber toPhoneNumber = new PhoneNumber(toNumber);
-        Key<Account> accountKey = new AccoutDao().loadKey(toPhoneNumber);
+        Key<Account> accountKey = new AccountDao().loadKey(toPhoneNumber);
         if (accountKey == null) {
             // TODO handle error when account can't be found
         }

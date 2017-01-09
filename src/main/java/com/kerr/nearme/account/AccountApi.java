@@ -63,12 +63,12 @@ public class AccountApi {
 
         ObjectifyService.ofy().transact(new VoidWork() {
             public void vrun() {
-                AccoutDao accoutDao = new AccoutDao();
-                Account account = accoutDao.load(user.getUserId());
+                AccountDao accountDao = new AccountDao();
+                Account account = accountDao.load(user.getUserId());
                 PhoneNumber phoneNumber = new PhoneNumber(newNumber.getPhoneNumber());
                 account.addPhoneNumber(phoneNumber);
                 new Dao<PhoneNumber>(PhoneNumber.class).save(phoneNumber);
-                accoutDao.save(account);
+                accountDao.save(account);
             }
         });
     }

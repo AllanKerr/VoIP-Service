@@ -7,14 +7,14 @@ import com.kerr.nearme.objectify.Dao;
 /**
  * Created by allankerr on 2017-01-08.
  */
-public class AccoutDao extends Dao<Account> {
+public class AccountDao extends Dao<Account> {
 
     static {
         ObjectifyService.register(Account.class);
         ObjectifyService.register(PhoneNumber.class);
     }
 
-    public AccoutDao() {
+    public AccountDao() {
         super(Account.class);
     }
 
