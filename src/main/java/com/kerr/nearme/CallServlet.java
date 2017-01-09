@@ -1,7 +1,7 @@
 package com.kerr.nearme;
 
 import com.kerr.nearme.account.Account;
-import com.kerr.nearme.account.AccountClient;
+import com.kerr.nearme.account.AccoutDao;
 import com.kerr.nearme.account.PhoneNumber;
 import com.twilio.sdk.verbs.Client;
 import com.twilio.sdk.verbs.Dial;
@@ -46,8 +46,7 @@ public class CallServlet extends HttpServlet {
 
         String number = req.getParameter("Called");
         PhoneNumber phoneNumber = new PhoneNumber(number);
-        AccountClient client = new AccountClient();
-        Account account = client.getAccount(phoneNumber);
+        Account account = new AccoutDao().load(phoneNumber);
 
         TwiMLResponse twiml = new TwiMLResponse();
         Dial dial = new Dial();
@@ -65,9 +64,7 @@ public class CallServlet extends HttpServlet {
 
         String clientParam = req.getParameter("From");
         String userId = clientParam.split(":")[1];
-
-        AccountClient client = new AccountClient();
-        Account account = client.getAccount(userId);
+        Account account = new AccoutDao().load(userId);
 
         TwiMLResponse twiml = new TwiMLResponse();
         Dial dial = new Dial(req.getParameter("To"));
