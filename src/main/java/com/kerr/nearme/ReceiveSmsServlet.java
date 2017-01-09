@@ -1,7 +1,12 @@
 package com.kerr.nearme;
 
-import com.twilio.sdk.verbs.Message;
-import com.twilio.sdk.verbs.TwiMLException;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Ref;
+import com.kerr.nearme.account.Account;
+import com.kerr.nearme.account.AccoutDao;
+import com.kerr.nearme.account.PhoneNumber;
+import com.kerr.nearme.billing.BillableQueue;
+import com.kerr.nearme.billing.SmsBillable;
 import com.twilio.sdk.verbs.TwiMLResponse;
 
 import javax.servlet.ServletException;
@@ -14,24 +19,26 @@ import java.io.IOException;
  * Created by allankerr on 2017-01-02.
  */
 public class ReceiveSmsServlet extends HttpServlet {
-    
+
+    private  static final String TO_PARAM = "To";
+    private  static final String MESSAGE_SID_PARAM = "MessageSid";
+
     @Override
     public void service(HttpServletRequest request, HttpServletResponse response) throws IOException,
             ServletException {
 
-        String fromNumber = request.getParameter("From");
-        String toNumber = request.getParameter("To");
-        String body = request.getParameter("Body");
-        String message = String.format("Hello, %s, you said %s to %s.", fromNumber, body, toNumber);
-
-        TwiMLResponse twiml = new TwiMLResponse();
-        Message sms = new Message(message);
-        try {
-            twiml.append(sms);
-        } catch (TwiMLException e) {
-            throw new ServletException("Twilio error", e);
+        String toNumber = request.getParameter(TO_PARAM);
+        PhoneNumber toPhoneNumber = new PhoneNumber(toNumber);
+        Key<Account> accountKey = new AccoutDao().loadKey(toPhoneNumber);
+        if (accountKey == null) {
+            // TODO handle error when account can't be found
         }
+        TwiMLResponse twiml = new TwiMLResponse();
         response.setContentType("application/xml");
         response.getWriter().print(twiml.toXML());
+
+        Ref<Account> accountRef = Ref.create(accountKey);
+        String messageSid = request.getParameter(MESSAGE_SID_PARAM);
+        BillableQueue.push(new SmsBillable(accountRef, messageSid));
     }
 }
