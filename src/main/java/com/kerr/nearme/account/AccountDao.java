@@ -20,17 +20,23 @@ public class AccountDao extends Dao<Account> {
 
     @Override
     public Account load(String id) {
-        Account account = super.load(id);
-        if (account == null) {
-            account = new Account(id);
-            ObjectifyService.ofy().save().entity(account).now();
-        }
-        return account;
+        Key<Account> key = loadKey(id);
+        return ObjectifyService.ofy().load().key(key).now();
     }
 
     public Account load(PhoneNumber phoneNumber) {
         Key<Account> key = loadKey(phoneNumber);
         return ObjectifyService.ofy().load().key(key).now();
+    }
+
+    public Key<Account> loadKey(String id) {
+        Key<Account> key = super.loadKey(id);
+        if (key == null) {
+            Account account = new Account(id);
+            ObjectifyService.ofy().save().entity(account).now();
+            key = Key.create(account);
+        }
+        return key;
     }
 
     public Key<Account> loadKey(PhoneNumber phoneNumber) {
