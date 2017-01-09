@@ -28,7 +28,7 @@ import java.util.HashMap;
 @Api(name = "account", version = "v1",
         title = "Account API",
         description = "API for handling event creation, fetching and queries.")
-public class AccountAPI {
+public class AccountApi {
 
 
     @ApiMethod(name = "send.sms", path = "send/sms")
