@@ -11,7 +11,7 @@ public class Dao<T> {
 
     private final Class<?> entityClass;
 
-    public <T>Dao(Class<T> entityClass) {
+    public Dao(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
 
@@ -28,6 +28,10 @@ public class Dao<T> {
 
     public T load(String id){
         return (T) ObjectifyService.ofy().load().type(entityClass).id(id).now();
+    }
+
+    public T load(Key<T> key) {
+        return ObjectifyService.ofy().load().key(key).now();
     }
 
     public Iterable<T> loadAll(){
