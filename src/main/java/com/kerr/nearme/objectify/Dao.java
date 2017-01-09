@@ -34,6 +34,10 @@ public class Dao<T> {
         return ObjectifyService.ofy().load().key(key).now();
     }
 
+    public Key<T> loadKey(String id) {
+        return (Key<T>) Key.create(entityClass, id);
+    }
+
     public Iterable<T> loadAll(){
         return (Iterable<T>) ObjectifyService.ofy().load().type(entityClass).iterable();
     }
