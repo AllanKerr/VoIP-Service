@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 /**
  * Created by allankerr on 2017-01-02.
@@ -23,8 +22,6 @@ public class CallServlet extends HttpServlet {
 
     private static final String DIRECTION_INBOUND = "inbound";
     private static final String DIRECTION_OUTBOUND = "outbound";
-
-    private static final Logger logger = Logger.getLogger(FirebaseTokenVerifier.class.getName());
 
     @Override
     public void service(HttpServletRequest req, HttpServletResponse resp) throws IOException {
