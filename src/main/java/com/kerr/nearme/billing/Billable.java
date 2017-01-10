@@ -10,7 +10,9 @@ import com.kerr.nearme.account.Account;
 import com.kerr.nearme.account.AccountDao;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -75,6 +77,24 @@ abstract class Billable implements Serializable {
 
     protected Double getPrice() {
         return price;
+    }
+
+    protected List<String> getBillableStatuses() {
+        return new ArrayList<String>();
+    }
+
+    protected List<String> getNonBillableStatuses() {
+        return new ArrayList<String>();
+    }
+
+    protected boolean isBillable(String status) {
+        if (getBillableStatuses().contains(status)) {
+            return true;
+        } else if (getNonBillableStatuses().contains(status)) {
+            return false;
+        } else {
+            throw new IllegalStateException("Unable to process billable due to unexpected status: " + status);
+        }
     }
 
     /**

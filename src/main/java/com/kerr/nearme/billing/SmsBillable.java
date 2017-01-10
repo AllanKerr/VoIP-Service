@@ -8,6 +8,8 @@ import com.kerr.twilio.messages.Message;
 import com.kerr.twilio.messages.MessageRequest;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -22,29 +24,40 @@ public class SmsBillable extends Billable {
         super(account, smsSid);
     }
 
-    public SmsBillable(Key<Account> account, String smsSid, Double price) {
-        super(account, smsSid, price);
+    @Override
+    protected List<String> getBillableStatuses() {
+        List<String> statues = new LinkedList<String>();
+        statues.add("sent");
+        statues.add("delivered");
+        statues.add("undelivered");
+        statues.add("received");
+        return statues;
+    }
+
+    @Override
+    protected List<String> getNonBillableStatuses() {
+        List<String> statues = new LinkedList<String>();
+        statues.add("failed");
+        return statues;
     }
 
     @Override
     public void process() {
         logger.fine("Attempting to record transaction");
         if (!isPending()) {
-            // Ensure billables are only recorded once.
             logger.warning("Attempted to record transaction that has already recorded.");
             return;
         }
-        Double price;
-        if (hasPrice()) {
-            price = getPrice();
-        } else {
-            try {
-                Message message = new MessageRequest(ApiKeys.TWILIO_ACCOUNT_SID, ApiKeys.TWILIO_AUTH_TOKEN, billableSid).fetchResponse();
-                price = Double.parseDouble(message.getPrice());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+        try {
+            Message message = new MessageRequest(ApiKeys.TWILIO_ACCOUNT_SID, ApiKeys.TWILIO_AUTH_TOKEN, billableSid).fetchResponse();
+            if (isBillable(message.getStatus())) {
+                Double price = Double.parseDouble(message.getPrice());
+                finishedProcessing(price);
+            } else {
+                logger.info("Processed non-billable SMS " + message.getSid());
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        finishedProcessing(price);
     }
 }

@@ -9,6 +9,7 @@ import com.kerr.twilio.calls.CallRequest;
 import com.kerr.twilio.calls.CallsRequest;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -27,6 +28,23 @@ public class CallBillable extends Billable {
     }
 
     @Override
+    protected List<String> getBillableStatuses() {
+        List<String> statues = new LinkedList<String>();
+        statues.add("completed");
+        return statues;
+    }
+
+    @Override
+    protected List<String> getNonBillableStatuses() {
+        List<String> statues = new LinkedList<String>();
+        statues.add("no-answer");
+        statues.add("busy");
+        statues.add("failed");
+        statues.add("canceled");
+        return statues;
+    }
+
+    @Override
     public void process() {
         logger.fine("Attempting to record transaction");
         if (!isPending()) {
@@ -35,21 +53,26 @@ public class CallBillable extends Billable {
         }
         try {
             Call parentCall = new CallRequest(ApiKeys.TWILIO_ACCOUNT_SID, ApiKeys.TWILIO_AUTH_TOKEN, billableSid).fetchResponse();
-            String billableStatus = parentCall.getStatus();
-            if (!billableStatus.equals(COMPLETED_STATUS)) {
-                throw new IllegalStateException("Unable to process billable due to unexpected status: " + billableStatus);
-            }
             List<Call> childCalls = new CallsRequest(ApiKeys.TWILIO_ACCOUNT_SID, ApiKeys.TWILIO_AUTH_TOKEN)
                     .setParentCallSid(billableSid)
                     .fetchResponse();
-            Double price = Double.parseDouble(parentCall.getPrice());
+
+            Double price = 0.00;
+            if (isBillable(parentCall.getStatus())) {
+                price += Double.parseDouble(parentCall.getPrice());
+            } else {
+                logger.info("Processed non-billable parent call " + parentCall.getSid());
+            }
             for (Call call : childCalls) {
-                // Child calls may not have a price if there was no answer.
-                if (call.getPrice() != null) {
+                if (isBillable(call.getStatus())) {
                     price += Double.parseDouble(call.getPrice());
+                } else {
+                    logger.info("Processed non-billable child call " + call.getSid());
                 }
             }
-            finishedProcessing(price);
+            if (price > 0) {
+                finishedProcessing(price);
+            }
         } catch (IOException e) {
             // Handled silently with a runtime exception causing the queue to retry processing.
             throw new RuntimeException(e);
