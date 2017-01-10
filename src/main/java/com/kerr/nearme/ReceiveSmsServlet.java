@@ -1,7 +1,6 @@
 package com.kerr.nearme;
 
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.Ref;
 import com.kerr.nearme.account.Account;
 import com.kerr.nearme.account.AccountDao;
 import com.kerr.nearme.account.PhoneNumber;
@@ -37,8 +36,7 @@ public class ReceiveSmsServlet extends HttpServlet {
         response.setContentType("application/xml");
         response.getWriter().print(twiml.toXML());
 
-        Ref<Account> accountRef = Ref.create(accountKey);
         String messageSid = request.getParameter(MESSAGE_SID_PARAM);
-        BillableQueue.push(new SmsBillable(accountRef, messageSid));
+        BillableQueue.push(new SmsBillable(accountKey, messageSid));
     }
 }

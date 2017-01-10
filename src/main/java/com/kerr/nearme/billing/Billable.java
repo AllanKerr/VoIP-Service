@@ -1,12 +1,13 @@
 package com.kerr.nearme.billing;
 
-import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Parent;
 import com.googlecode.objectify.condition.IfTrue;
 import com.kerr.nearme.account.Account;
+import com.kerr.nearme.account.AccountDao;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -20,6 +21,10 @@ abstract class Billable implements Serializable {
 
     private static final Logger logger = Logger.getLogger(Billable.class.getName());
     /**
+     * The SID for uniquely identifying the billable
+     */
+    protected String billableSid;
+    /**
      * Determines whether or not the billable has been applied to the account's credit balance
      */
     @Index(IfTrue.class)
@@ -28,8 +33,7 @@ abstract class Billable implements Serializable {
      * The account that incurred the billable
      */
     @Parent
-    private Ref<Account> accountRef;
-
+    private Key<Account> accountKey;
     /**
      * The date and time the billable was created.
      */
@@ -40,15 +44,26 @@ abstract class Billable implements Serializable {
      */
     @Index
     private Date recordDate;
-
     /**
      * The price of the billable to be set when it is recorded.
      */
     private Double price;
-    /**
-     * The SID for uniquely identifying the billable
-     */
-    protected String billableSid;
+    @Id
+    private Long id;
+
+    private Billable() {
+    }
+
+    protected Billable(Key<Account> account, String billableSid) {
+        this.accountKey = account;
+        this.billableSid = billableSid;
+        this.creationDate = new Date();
+    }
+
+    protected Billable(Key<Account> account, String billableSid, Double price) {
+        this(account, billableSid);
+        this.price = price;
+    }
 
     protected boolean isPending() {
         return isPending;
@@ -60,23 +75,6 @@ abstract class Billable implements Serializable {
 
     protected Double getPrice() {
         return price;
-    }
-
-    @Id
-    private Long id;
-
-    private Billable() {
-    }
-
-    protected Billable(Ref<Account> account, String billableSid) {
-        this.accountRef = account;
-        this.billableSid = billableSid;
-        this.creationDate = new Date();
-    }
-
-    protected Billable(Ref<Account> account, String billableSid, Double price) {
-        this(account, billableSid);
-        this.price = price;
     }
 
     /**
@@ -93,7 +91,7 @@ abstract class Billable implements Serializable {
      */
     protected void finishedProcessing(Double price) {
 
-        Account account = accountRef.get();
+        Account account = new AccountDao().load(accountKey);
 
         this.price = price;
         this.recordDate = new Date();

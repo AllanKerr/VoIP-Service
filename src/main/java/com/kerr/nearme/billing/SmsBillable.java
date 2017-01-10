@@ -1,6 +1,6 @@
 package com.kerr.nearme.billing;
 
-import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Subclass;
 import com.kerr.nearme.ApiKeys;
 import com.kerr.nearme.account.Account;
@@ -18,11 +18,11 @@ public class SmsBillable extends Billable {
 
     private static final Logger logger = Logger.getLogger(SmsBillable.class.getName());
 
-    public SmsBillable(Ref<Account> account, String smsSid) {
+    public SmsBillable(Key<Account> account, String smsSid) {
         super(account, smsSid);
     }
 
-    public SmsBillable(Ref<Account> account, String smsSid, Double price) {
+    public SmsBillable(Key<Account> account, String smsSid, Double price) {
         super(account, smsSid, price);
     }
 
