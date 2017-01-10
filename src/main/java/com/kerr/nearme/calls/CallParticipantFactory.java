@@ -32,6 +32,8 @@ final class CallParticipantFactory {
             } else {
                 return new ClientParticipant(account);
             }
+        } else if (target == null || target.isEmpty()) {
+            return new AnonymousParticipant();
         } else {
             throw new RuntimeException("Received unexpected call target: " + target);
         }
