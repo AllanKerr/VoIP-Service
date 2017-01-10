@@ -5,5 +5,9 @@ package com.kerr.nearme.messages;
  */
 class SmsParameters {
     static final String TO = "To";
+    static final String FROM = "From";
+
     static final String MESSAGE_SID = "MessageSid";
+    static final String BODY = "Body";
+
 }
