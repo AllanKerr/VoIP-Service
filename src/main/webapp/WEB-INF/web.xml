@@ -34,7 +34,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>receivesms</servlet-name>
-        <servlet-class>com.kerr.nearme.ReceiveSmsServlet</servlet-class>
+        <servlet-class>com.kerr.nearme.messages.ReceiveSmsServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>receivesms</servlet-name>

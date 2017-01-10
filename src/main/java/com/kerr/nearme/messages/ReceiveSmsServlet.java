@@ -1,4 +1,4 @@
-package com.kerr.nearme;
+package com.kerr.nearme.messages;
 
 import com.googlecode.objectify.Key;
 import com.kerr.nearme.account.Account;
