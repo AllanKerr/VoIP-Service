@@ -18,11 +18,13 @@ import com.twilio.jwt.accesstoken.AccessToken;
 import com.twilio.jwt.accesstoken.VoiceGrant;
 import com.twilio.sdk.TwilioRestClient;
 import com.twilio.sdk.TwilioRestException;
-import com.twilio.sdk.resource.factory.SmsFactory;
-import com.twilio.sdk.resource.instance.Sms;
+import com.twilio.sdk.resource.factory.MessageFactory;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 @Api(name = "account", version = "v1",
         title = "Account API",
@@ -33,21 +35,22 @@ public class AccountApi {
     @ApiMethod(name = "send.sms", path = "send/sms")
     public void sendSmsMessage(User user, Message message) throws UnauthorizedException, TwilioRestException {
         if (user == null) {
-            //    throw new UnauthorizedException("");
+            user = new User("work.allankerr@gmail.com", "", "ZYh1BJU0QyWbVw1vDgQshDKelCP2");
+            //throw new UnauthorizedException("");
         }
         TwilioRestClient client = new TwilioRestClient(ApiKeys.TWILIO_ACCOUNT_SID, ApiKeys.TWILIO_AUTH_TOKEN);
-        SmsFactory factory = client.getAccount().getSmsFactory();
+        MessageFactory factory = client.getAccount().getMessageFactory();
 
-        HashMap<String, String> content = new HashMap<String, String>();
-        content.put("To", message.getPhoneNumber());
-        content.put("From", "+13067007600");
-        content.put("Body", message.getBody());
-        Sms sent = factory.create(content);
+        AccountDao accountDao = new AccountDao();
+        Account account = accountDao.load(user.getUserId());
+        List<NameValuePair> content = new LinkedList<NameValuePair>();
+        content.add(new BasicNameValuePair("To", message.getPhoneNumber()));
+        content.add(new BasicNameValuePair("From", account.getOutgoingNumber().getPhoneNumber()));
+        content.add(new BasicNameValuePair("Body", message.getBody()));
+        com.twilio.sdk.resource.instance.Message sent = factory.create(content);
 
-
-
-        Key<Account> accountRef = Key.create(Account.class, "ZYh1BJU0QyWbVw1vDgQshDKelCP2");
-        BillableQueue.push(new SmsBillable(accountRef, sent.getSid()));
+        Key<Account> accountKey = Key.create(Account.class, user.getUserId());
+        BillableQueue.push(new SmsBillable(accountKey, sent.getSid()));
     }
 
     @ApiMethod(name = "buyPhoneNumber", path = "buyPhoneNumber", authenticators = {FirebaseAuthenticator.class})
