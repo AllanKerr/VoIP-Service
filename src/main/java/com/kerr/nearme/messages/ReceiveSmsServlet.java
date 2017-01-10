@@ -19,14 +19,11 @@ import java.io.IOException;
  */
 public class ReceiveSmsServlet extends HttpServlet {
 
-    private  static final String TO_PARAM = "To";
-    private  static final String MESSAGE_SID_PARAM = "MessageSid";
-
     @Override
     public void service(HttpServletRequest request, HttpServletResponse response) throws IOException,
             ServletException {
 
-        String toNumber = request.getParameter(TO_PARAM);
+        String toNumber = request.getParameter(SmsParameters.TO);
         PhoneNumber toPhoneNumber = new PhoneNumber(toNumber);
         Key<Account> accountKey = new AccountDao().loadKey(toPhoneNumber);
         if (accountKey == null) {
@@ -36,7 +33,7 @@ public class ReceiveSmsServlet extends HttpServlet {
         response.setContentType("application/xml");
         response.getWriter().print(twiml.toXML());
 
-        String messageSid = request.getParameter(MESSAGE_SID_PARAM);
+        String messageSid = request.getParameter(SmsParameters.MESSAGE_SID);
         BillableQueue.push(new SmsBillable(accountKey, messageSid));
     }
 }
