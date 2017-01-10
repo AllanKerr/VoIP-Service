@@ -6,7 +6,6 @@ import com.google.api.server.spi.response.UnauthorizedException;
 import com.google.appengine.api.users.User;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
-import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.VoidWork;
 import com.kerr.nearme.ApiKeys;
 import com.kerr.nearme.FirebaseAuthenticator;
@@ -47,7 +46,7 @@ public class AccountApi {
 
 
 
-        Ref<Account> accountRef = Ref.create(Key.create(Account.class, "ZYh1BJU0QyWbVw1vDgQshDKelCP2"));
+        Key<Account> accountRef = Key.create(Account.class, "ZYh1BJU0QyWbVw1vDgQshDKelCP2");
         BillableQueue.push(new SmsBillable(accountRef, sent.getSid()));
     }
 
