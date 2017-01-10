@@ -8,11 +8,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * Created by allankerr on 2017-01-02.
  */
-class CallServlet extends HttpServlet {
+public class CallServlet extends HttpServlet {
+
+    private static final Logger logger = Logger.getLogger(CallStatusServlet.class.getName());
 
     @Override
     public void service(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -22,6 +25,9 @@ class CallServlet extends HttpServlet {
 
         CallParticipant toParticipant = CallParticipantFactory.create(to);
         CallParticipant fromParticipant = CallParticipantFactory.create(from);
+
+        logger.info("From: " + fromParticipant);
+        logger.info("To: " + toParticipant);
 
         TwiMLResponse twiml = new TwiMLResponse();
         Dial dial = new Dial();
