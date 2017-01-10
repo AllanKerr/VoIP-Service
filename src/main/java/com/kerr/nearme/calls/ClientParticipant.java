@@ -12,10 +12,13 @@ class ClientParticipant extends CallParticipant {
     private Account account;
 
     ClientParticipant(Account account) {
-        if (account == null) {
-            throw new NullPointerException();
-        }
+        super(account.getUserId());
         this.account = account;
+    }
+
+    @Override
+    public boolean isBillable() {
+        return true;
     }
 
     @Override

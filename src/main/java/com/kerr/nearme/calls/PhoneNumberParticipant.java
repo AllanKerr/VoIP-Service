@@ -12,10 +12,13 @@ class PhoneNumberParticipant extends CallParticipant {
     private PhoneNumber number;
 
     PhoneNumberParticipant(PhoneNumber number) {
-        if (number == null) {
-            throw new NullPointerException();
-        }
+        super(number.getPhoneNumber());
         this.number = number;
+    }
+
+    @Override
+    public boolean isBillable() {
+        return false;
     }
 
     @Override
