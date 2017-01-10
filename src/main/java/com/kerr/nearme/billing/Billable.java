@@ -98,6 +98,6 @@ abstract class Billable implements Serializable {
         this.isPending = false;
 
         // TODO decrement account credits
-        logger.info("Successfully recorded transaction" + billableSid + " for ");
+        logger.info("Successfully recorded transaction " + billableSid + " for " + account.getUserId() + " at cost " + price);
     }
 }
