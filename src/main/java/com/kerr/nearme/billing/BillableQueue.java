@@ -35,6 +35,9 @@ public final class BillableQueue {
      * @param billable The billable to be pushed to the queue for processing.
      */
     public static void push(Billable billable) {
+        if (billable == null) {
+            throw new NullPointerException();
+        }
         BillableTask task = new BillableTask(billable);
         long eta = System.currentTimeMillis() + DELAY_MILLIS;
         queue.add(TaskOptions.Builder.withPayload(task).etaMillis(eta));
@@ -54,7 +57,7 @@ public final class BillableQueue {
                 @Override
                 public void vrun() {
                     billable.process();
-                    if (billable.getPrice() > 0) {
+                    if (billable.hasPrice()) {
                         new BillableDao().save(billable);
                     }
                 }

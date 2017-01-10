@@ -46,7 +46,7 @@ public class CallBillable extends Billable {
 
     @Override
     public void process() {
-        logger.fine("Attempting to record transaction");
+        logger.info("Attempting to record transaction");
         try {
             Call parentCall = new CallRequest(ApiKeys.TWILIO_ACCOUNT_SID, ApiKeys.TWILIO_AUTH_TOKEN, billableSid).fetchResponse();
             List<Call> childCalls = new CallsRequest(ApiKeys.TWILIO_ACCOUNT_SID, ApiKeys.TWILIO_AUTH_TOKEN)
@@ -66,7 +66,7 @@ public class CallBillable extends Billable {
                     logger.info("Processed non-billable child call " + call.getSid());
                 }
             }
-            if (price > 0) {
+            if (Math.abs(price) > 0) {
                 finishedProcessing(price);
             }
         } catch (IOException e) {
