@@ -26,6 +26,9 @@ public class AccountDao extends Dao<Account> {
 
     public Account load(PhoneNumber phoneNumber) {
         Key<Account> key = loadKey(phoneNumber);
+        if (key == null) {
+            return null;
+        }
         return ObjectifyService.ofy().load().key(key).now();
     }
 
