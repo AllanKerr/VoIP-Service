@@ -7,7 +7,7 @@ import com.kerr.nearme.account.PhoneNumber;
 /**
  * Created by allankerr on 2017-01-09.
  */
-public final class CallParticipantFactory {
+final class CallParticipantFactory {
 
     private static final String CLIENT_PREFIX = "client";
 
