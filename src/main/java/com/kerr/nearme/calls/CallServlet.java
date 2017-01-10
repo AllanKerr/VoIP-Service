@@ -20,8 +20,8 @@ public class CallServlet extends HttpServlet {
     @Override
     public void service(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        String to = req.getParameter(CallServletParameters.TO);
-        String from = req.getParameter(CallServletParameters.FROM);
+        String to = req.getParameter(CallParameters.TO);
+        String from = req.getParameter(CallParameters.FROM);
 
         CallParticipant toParticipant = CallParticipantFactory.create(to);
         CallParticipant fromParticipant = CallParticipantFactory.create(from);

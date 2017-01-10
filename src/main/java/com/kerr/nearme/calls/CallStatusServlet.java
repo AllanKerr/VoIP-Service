@@ -22,8 +22,8 @@ public class CallStatusServlet extends HttpServlet {
     @Override
     public void service(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 
-        String to = req.getParameter(CallServletParameters.TO);
-        String from = req.getParameter(CallServletParameters.FROM);
+        String to = req.getParameter(CallParameters.TO);
+        String from = req.getParameter(CallParameters.FROM);
 
         CallParticipant fromParticipant = CallParticipantFactory.create(from);
         CallParticipant toParticipant = CallParticipantFactory.create(to);
@@ -39,7 +39,7 @@ public class CallStatusServlet extends HttpServlet {
         } else {
             throw new ServletException("Both call participants were not billable.");
         }
-        String callSid = req.getParameter(CallServletParameters.CALL_SID);
+        String callSid = req.getParameter(CallParameters.CALL_SID);
         BillableQueue.push(new CallBillable(accountKey, callSid));
     }
 }
