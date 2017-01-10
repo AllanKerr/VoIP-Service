@@ -20,6 +20,8 @@ public class CallBillable extends Billable {
 
     private static final Logger logger = Logger.getLogger(CallBillable.class.getName());
 
+    private static final String COMPLETED_STATUS = "completed";
+
     public CallBillable(Key<Account> accountRef, String callSid) {
         super(accountRef, callSid);
     }
@@ -28,28 +30,28 @@ public class CallBillable extends Billable {
     public void process() {
         logger.fine("Attempting to record transaction");
         if (!isPending()) {
-            // Ensure billables are only recorded once.
             logger.warning("Attempted to record transaction that has already recorded.");
             return;
         }
         try {
             Call parentCall = new CallRequest(ApiKeys.TWILIO_ACCOUNT_SID, ApiKeys.TWILIO_AUTH_TOKEN, billableSid).fetchResponse();
-
-            logger.info("Call Status: " + parentCall.getStatus());
-
+            String billableStatus = parentCall.getStatus();
+            if (!billableStatus.equals(COMPLETED_STATUS)) {
+                throw new IllegalStateException("Unable to process billable due to unexpected status: " + billableStatus);
+            }
             List<Call> childCalls = new CallsRequest(ApiKeys.TWILIO_ACCOUNT_SID, ApiKeys.TWILIO_AUTH_TOKEN)
                     .setParentCallSid(billableSid)
                     .fetchResponse();
             Double price = Double.parseDouble(parentCall.getPrice());
             for (Call call : childCalls) {
-                price += Double.parseDouble(call.getPrice());
+                // Child calls may not have a price if there was no answer.
+                if (call.getPrice() != null) {
+                    price += Double.parseDouble(call.getPrice());
+                }
             }
             finishedProcessing(price);
         } catch (IOException e) {
-            // Billables are handled inside the billable queue.
-            // If the call request or parsing the price fail then
-            // the runtime exception will cause the queue runnable to
-            // throw an exception and process will be retried.
+            // Handled silently with a runtime exception causing the queue to retry processing.
             throw new RuntimeException(e);
         }
     }
