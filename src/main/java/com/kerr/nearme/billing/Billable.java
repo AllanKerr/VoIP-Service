@@ -5,7 +5,6 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Parent;
-import com.googlecode.objectify.condition.IfTrue;
 import com.kerr.nearme.account.Account;
 import com.kerr.nearme.account.AccountDao;
 
@@ -22,15 +21,12 @@ import java.util.logging.Logger;
 abstract class Billable implements Serializable {
 
     private static final Logger logger = Logger.getLogger(Billable.class.getName());
+
     /**
      * The SID for uniquely identifying the billable
      */
     protected String billableSid;
-    /**
-     * Determines whether or not the billable has been applied to the account's credit balance
-     */
-    @Index(IfTrue.class)
-    private boolean isPending = true;
+
     /**
      * The account that incurred the billable
      */
@@ -65,10 +61,6 @@ abstract class Billable implements Serializable {
     protected Billable(Key<Account> account, String billableSid, Double price) {
         this(account, billableSid);
         this.price = price;
-    }
-
-    protected boolean isPending() {
-        return isPending;
     }
 
     protected boolean hasPrice() {
@@ -115,7 +107,6 @@ abstract class Billable implements Serializable {
 
         this.price = price;
         this.recordDate = new Date();
-        this.isPending = false;
 
         // TODO decrement account credits
         logger.info("Successfully recorded transaction " + billableSid + " for " + account.getUserId() + " at cost " + price);

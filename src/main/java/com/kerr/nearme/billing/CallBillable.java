@@ -47,10 +47,6 @@ public class CallBillable extends Billable {
     @Override
     public void process() {
         logger.fine("Attempting to record transaction");
-        if (!isPending()) {
-            logger.warning("Attempted to record transaction that has already recorded.");
-            return;
-        }
         try {
             Call parentCall = new CallRequest(ApiKeys.TWILIO_ACCOUNT_SID, ApiKeys.TWILIO_AUTH_TOKEN, billableSid).fetchResponse();
             List<Call> childCalls = new CallsRequest(ApiKeys.TWILIO_ACCOUNT_SID, ApiKeys.TWILIO_AUTH_TOKEN)

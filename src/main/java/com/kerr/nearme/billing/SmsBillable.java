@@ -44,10 +44,6 @@ public class SmsBillable extends Billable {
     @Override
     public void process() {
         logger.fine("Attempting to record transaction");
-        if (!isPending()) {
-            logger.warning("Attempted to record transaction that has already recorded.");
-            return;
-        }
         try {
             Message message = new MessageRequest(ApiKeys.TWILIO_ACCOUNT_SID, ApiKeys.TWILIO_AUTH_TOKEN, billableSid).fetchResponse();
             if (isBillable(message.getStatus())) {
