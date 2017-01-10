@@ -1,9 +1,9 @@
-package com.kerr.nearme.account;
+package com.kerr.nearme.messages;
 
 /**
  * Created by allankerr on 2017-01-03.
  */
-public class Message {
+class SmsMessage {
 
     private String phoneNumber;
 
@@ -17,12 +17,12 @@ public class Message {
         return body;
     }
 
-    public Message(String phoneNumber, String body) {
+    public SmsMessage(String phoneNumber, String body) {
         this.phoneNumber = phoneNumber;
         this.body = body;
     }
 
-    private Message() {
+    private SmsMessage() {
 
     }
 }
