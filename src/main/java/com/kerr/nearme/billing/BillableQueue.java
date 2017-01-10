@@ -16,26 +16,6 @@ public final class BillableQueue {
 
     private static final Queue queue = QueueFactory.getQueue("billing-queue");
 
-    private static class BillableTask implements DeferredTask {
-
-        private Billable billable;
-
-        public BillableTask(Billable billable) {
-           this.billable = billable;
-        }
-
-        @Override
-        public void run() {
-            ObjectifyService.ofy().transact(new VoidWork() {
-                @Override
-                public void vrun() {
-                    billable.process();
-                    new BillableDao().save(billable);
-                }
-            });
-        }
-    }
-
     /**
      * Immediately record the billable by applying the price to the user's accounts
      * @precond billable.hasPrice() == true
@@ -58,5 +38,27 @@ public final class BillableQueue {
         BillableTask task = new BillableTask(billable);
         long eta = System.currentTimeMillis() + DELAY_MILLIS;
         queue.add(TaskOptions.Builder.withPayload(task).etaMillis(eta));
+    }
+
+    private static class BillableTask implements DeferredTask {
+
+        private Billable billable;
+
+        public BillableTask(Billable billable) {
+            this.billable = billable;
+        }
+
+        @Override
+        public void run() {
+            ObjectifyService.ofy().transact(new VoidWork() {
+                @Override
+                public void vrun() {
+                    billable.process();
+                    if (billable.getPrice() > 0) {
+                        new BillableDao().save(billable);
+                    }
+                }
+            });
+        }
     }
 }
