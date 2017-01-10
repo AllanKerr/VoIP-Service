@@ -11,6 +11,7 @@ public class BillableDao extends Dao<Billable> {
     static {
         ObjectifyService.register(Billable.class);
         ObjectifyService.register(SmsBillable.class);
+        ObjectifyService.register(CallBillable.class);
     }
 
     public BillableDao() {
