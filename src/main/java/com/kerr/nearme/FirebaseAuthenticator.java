@@ -3,6 +3,7 @@ package com.kerr.nearme;
 import com.google.api.server.spi.auth.common.User;
 import com.google.api.server.spi.config.Authenticator;
 import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -30,6 +31,8 @@ public class FirebaseAuthenticator implements Authenticator {
         } catch (IOException e) {
 
         } catch (MalformedJwtException e) {
+
+        } catch (SignatureException e) {
 
         }
         return null;
